@@ -1,7 +1,9 @@
 /**
+ * Blend rgba on hex color
+ *
  * Blends two colors together using alpha compositing.
- * Takes an rgba value as the first argument
- * and a 6 digit hex value as the second argument,
+ * Takes an rgba color value as the first argument
+ * and a 6 digit hex color value as the second argument,
  * then returns the blended color in hexadecimal format.
  *
  * @example
