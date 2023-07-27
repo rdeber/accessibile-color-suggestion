@@ -5,6 +5,7 @@ import './App.css'
 
 function App() {
   const [color, setColor] = useState<string>('#bada55')
+  const [colorSuggestion1, setColorSuggestion1] = useState<string>('#999999')
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setColor(event.target.value);
@@ -18,6 +19,9 @@ function App() {
       <TextField onChange={handleChange} id="outlined-basic" label="Outlined" variant="outlined" />
       <Typography variant="h1" component="div" gutterBottom>
         {color}
+      </Typography>
+      <Typography variant="h1" component="div" gutterBottom>
+        {colorSuggestion1}
       </Typography>
     </>
   )
