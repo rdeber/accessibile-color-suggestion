@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Button, InputBase, Paper, styled, CssBaseline } from '@mui/material';
+import { Typography, Button, InputBase, Paper, CssBaseline } from '@mui/material';
 import { suggestAccessibleColor } from './utils/suggestAccessibleColor';
 
 function App() {
@@ -35,8 +35,14 @@ function App() {
     <>
       <CssBaseline />
       <main style={mainStyle}>
-      <Typography variant="h1" gutterBottom>
+      <Typography sx={{ color: colorSuggestion }} variant='h1' component={'h1'}>
         Accessible Color Suggestions
+      </Typography>
+      <Typography sx={{ color: colorSuggestion }} variant='h2' component={'h2'} gutterBottom>
+        Accessible Color Suggestions
+      </Typography>
+      <Typography sx={{ color: colorSuggestion }} component={'p'} gutterBottom>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </Typography>
       <Paper
         component="form"

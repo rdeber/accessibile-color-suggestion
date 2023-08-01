@@ -53,5 +53,8 @@ export function suggestAccessibleColor(background: string) {
   // Increase alpha by 0.02 from last value
   alpha += 0.02;
 
-  return `rgba(${suggestedColor[0]},${suggestedColor[1]},${suggestedColor[2]},${alpha})`;
+  // Blend the color with the updated alpha value and the background color
+  const finalBlendedColor = blendRgbaOnHex(`rgba(${suggestedColor[0]},${suggestedColor[1]},${suggestedColor[2]},${alpha})`, background);
+
+  return finalBlendedColor;
 }
