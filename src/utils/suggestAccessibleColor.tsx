@@ -1,3 +1,5 @@
+import { blendRgbaOnHex } from "./blendRgbaOnHex";
+
 export function suggestAccessibleColor(background: string) {
   // Helper function to convert RGB to relative luminance
   function getRelativeLuminance(color: number) {
@@ -33,5 +35,23 @@ export function suggestAccessibleColor(background: string) {
   const blackContrast = getContrastRatio(bgLuminance, blackLuminance);
 
   // Determine which color has a higher contrast ratio
-  return whiteContrast >= blackContrast ? "white" : "black";
+  const suggestedColor = whiteContrast >= blackContrast ? [255, 255, 255] : [0, 0, 0];
+
+  // Start with alpha value of 1.0
+  let alpha = 1.0;
+  let contrastRatio = Math.max(whiteContrast, blackContrast);
+
+  // Reduce alpha and check contrast ratio
+  while (alpha > 0 && contrastRatio >= 4.5) {
+    alpha -= 0.01;
+    const blendedColor = blendRgbaOnHex(`rgba(${suggestedColor[0]},${suggestedColor[1]},${suggestedColor[2]},${alpha})`, background);
+    const { r, g, b } = hexToRGB(blendedColor);
+    const blendedLuminance = 0.2126 * getRelativeLuminance(r) + 0.7152 * getRelativeLuminance(g) + 0.0722 * getRelativeLuminance(b);
+    contrastRatio = getContrastRatio(bgLuminance, blendedLuminance);
+  }
+
+  // Increase alpha by 0.02 from last value
+  alpha += 0.02;
+
+  return `rgba(${suggestedColor[0]},${suggestedColor[1]},${suggestedColor[2]},${alpha})`;
 }
