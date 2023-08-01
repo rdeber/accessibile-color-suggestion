@@ -1,6 +1,7 @@
 import { blendRgbaOnHex } from "./blendRgbaOnHex";
 
 export function suggestAccessibleColor(background: string) {
+
   // Helper function to convert RGB to relative luminance
   function getRelativeLuminance(color: number) {
     const sRGB = color / 255.0;
@@ -40,6 +41,7 @@ export function suggestAccessibleColor(background: string) {
   // Start with alpha value of 1.0
   let alpha = 1.0;
   let contrastRatio = Math.max(whiteContrast, blackContrast);
+  const suggestedColors = [];
 
   // Reduce alpha and check contrast ratio
   while (alpha > 0 && contrastRatio >= 4.5) {
@@ -50,11 +52,19 @@ export function suggestAccessibleColor(background: string) {
     contrastRatio = getContrastRatio(bgLuminance, blendedLuminance);
   }
 
-  // Increase alpha by 0.02 from last value
-  alpha += 0.02;
+  for (let i = 0; i < 3; i++) {
+    alpha += 0.1;
+    const color = blendRgbaOnHex(`rgba(${suggestedColor[0]},${suggestedColor[1]},${suggestedColor[2]},${alpha})`, background);
+    const { r, g, b } = hexToRGB(color);
+    const colorLuminance = 0.2126 * getRelativeLuminance(r) + 0.7152 * getRelativeLuminance(g) + 0.0722 * getRelativeLuminance(b);
+    const contrast = getContrastRatio(bgLuminance, colorLuminance);
+    if (contrast >= 4.5) {
+      suggestedColors.push(color);
+    } else {
+      break;
+    }
+  }
 
-  // Blend the color with the updated alpha value and the background color
-  const finalBlendedColor = blendRgbaOnHex(`rgba(${suggestedColor[0]},${suggestedColor[1]},${suggestedColor[2]},${alpha})`, background);
-
-  return finalBlendedColor;
+  console.log('suggestedColors', suggestedColors)
+  return suggestedColors;
 }

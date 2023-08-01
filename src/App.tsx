@@ -63,6 +63,21 @@ function App() {
       <Typography variant="h3" component="div" gutterBottom>
         {colorSuggestion}
       </Typography>
+      <Paper
+        component="div"
+        sx={{ background: colorSuggestion[0], p: '2px 4px', width: 200, height: 200}}
+      >
+      </Paper>
+      <Paper
+        component="div"
+        sx={{ background: colorSuggestion[1], p: '2px 4px', width: 200, height: 200}}
+      >
+      </Paper>
+      <Paper
+        component="div"
+        sx={{ background: colorSuggestion[2], p: '2px 4px', width: 200, height: 200}}
+      >
+      </Paper>
     </main>
     </>
   );
