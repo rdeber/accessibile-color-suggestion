@@ -7,7 +7,7 @@
  * then returns the blended color in hexadecimal format.
  *
  * @example
- * const hexColor = blendColors('rgba(0, 0, 0, .25)', '#555555');
+ * const hexColor = blendRgbaOnHex('rgba(0, 0, 0, .25)', '#555555');
  * console.log(hexColor);
  *
  * @param foreground The foreground color to blend as an rgba value (ex. rgba(0,0,0,.75))
