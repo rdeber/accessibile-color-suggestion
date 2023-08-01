@@ -1,6 +1,14 @@
 import { blendRgbaOnHex } from "./blendRgbaOnHex";
+import { cssColors } from "./cssNamedColors";
 
-export function suggestAccessibleColor(background: string) {
+export function suggestAccessibleColor(inputColor: string, contrastThreshold: number = 4.5) {
+  const normalizeColor = (color: string): string => {
+    if (color.startsWith('#')) return color;
+    if (/^#[0-9a-f]{3,6}$/i.test(color)) return color;
+    return cssColors[color.toLowerCase() as keyof typeof cssColors];
+  };
+
+  const background = normalizeColor(inputColor);
 
   // Helper function to convert RGB to relative luminance
   function getRelativeLuminance(color: number) {
@@ -44,7 +52,7 @@ export function suggestAccessibleColor(background: string) {
   const suggestedColors = [];
 
   // Reduce alpha and check contrast ratio
-  while (alpha > 0 && contrastRatio >= 4.5) {
+  while (alpha > 0 && contrastRatio >= contrastThreshold) {
     alpha -= 0.01;
     const blendedColor = blendRgbaOnHex(`rgba(${suggestedColor[0]},${suggestedColor[1]},${suggestedColor[2]},${alpha})`, background);
     const { r, g, b } = hexToRGB(blendedColor);
@@ -53,18 +61,17 @@ export function suggestAccessibleColor(background: string) {
   }
 
   for (let i = 0; i < 3; i++) {
-    alpha += 0.1;
+    alpha += 0.075;
     const color = blendRgbaOnHex(`rgba(${suggestedColor[0]},${suggestedColor[1]},${suggestedColor[2]},${alpha})`, background);
     const { r, g, b } = hexToRGB(color);
     const colorLuminance = 0.2126 * getRelativeLuminance(r) + 0.7152 * getRelativeLuminance(g) + 0.0722 * getRelativeLuminance(b);
     const contrast = getContrastRatio(bgLuminance, colorLuminance);
-    if (contrast >= 4.5) {
+    if (contrast >= contrastThreshold) {
       suggestedColors.push(color);
     } else {
       break;
     }
   }
 
-  console.log('suggestedColors', suggestedColors)
   return suggestedColors;
 }
